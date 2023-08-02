@@ -28,7 +28,7 @@ defmodule SitemapCheck do
     end
   end
 
-  def remove_xml_declaration(content) do
+  defp remove_xml_declaration(content) do
     case String.split(content, "\n", parts: 2) do
       [_h | data] ->
         {:ok, data}
@@ -43,6 +43,8 @@ defmodule SitemapCheck do
         {:ok, {200, url}}
       {:ok, %HTTPoison.Response{status_code: 301, body: body}} ->
         {:ok, {301, url, body}}
+      {:ok, %HTTPoison.Response{status_code: 302}} ->
+        {:ok, {302, url}}
       {:ok, %HTTPoison.Response{status_code: 404, body: body}} ->
         {:ok, {404, url, body}}
       {:ok, %HTTPoison.Response{status_code: 500}} ->
