@@ -21,6 +21,8 @@ defmodule SitemapCheck do
         |> unpack_xml()
         |> Enum.map(&enum_data/1)
         |> Enum.map(&ping/1)
+        |> Enum.map(fn {_x, y} -> y end)
+        |> List.flatten
         |> IO.inspect([limit: :infinity, pretty: true])
 
       {:error, reason} ->
